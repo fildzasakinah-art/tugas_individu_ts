@@ -340,22 +340,34 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .hero-pet {
   position: absolute;
   z-index: 1;
-  top: 60px;
-  right: 74px;
   display: grid;
-  width: 236px;
-  height: 230px;
   place-items: center;
-  font-size: 169px;
   filter: drop-shadow(0 16px 10px #74402535);
+}
+
+.hero-pet--dog {
+  top: 68px;
+  right: 31px;
+  width: 171px;
+  height: 205px;
+  font-size: 145px;
   transform: rotate(-7deg);
+}
+
+.hero-pet--cat {
+  top: 104px;
+  right: 153px;
+  width: 142px;
+  height: 166px;
+  font-size: 118px;
+  transform: rotate(7deg);
 }
 
 .hero-shadow {
   position: absolute;
-  right: 78px;
+  right: 49px;
   bottom: 51px;
-  width: 210px;
+  width: 250px;
   height: 27px;
   border-radius: 50%;
   background: #723b2638;
@@ -477,6 +489,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .pet-picker {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -485,6 +498,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border: 1px solid var(--line);
   border-radius: 11px;
   background: #fffefa;
+  cursor: pointer;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.pet-picker:focus-within {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px #e8794526;
 }
 
 .pet-avatar {
@@ -497,11 +517,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 19px;
 }
 
-.pet-picker small, .pet-picker strong {
+.pet-picker-info small, .pet-picker-info strong {
   display: block;
 }
 
-.pet-picker small {
+.pet-picker-info small {
   margin-bottom: 3px;
   color: #aaa59a;
   font-size: 7px;
@@ -509,8 +529,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   letter-spacing: 1px;
 }
 
-.pet-picker strong {
+.pet-picker-info strong {
   font-size: 11px;
+}
+
+.pet-picker-select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .chevron {
@@ -1275,11 +1304,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     height: 174px;
   }
   .hero-pet {
-    top: 79px;
-    right: 12px;
-    width: 185px;
-    height: 184px;
-    font-size: 132px;
+    height: 158px;
+  }
+  .hero-pet--dog {
+    top: 82px;
+    right: 4px;
+    width: 139px;
+    font-size: 116px;
+  }
+  .hero-pet--cat {
+    top: 104px;
+    right: 103px;
+    width: 121px;
+    font-size: 100px;
   }
   .hero-orbit--one {
     top: 54px;
@@ -1294,9 +1331,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     height: 254px;
   }
   .hero-shadow {
-      right: 15px;
+      right: 4px;
       bottom: 65px;
-      width: 165px;
+      width: 220px;
     }
     .sticker--heart {
       top: 80px;
@@ -1380,11 +1417,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
       height: 160px;
     }
     .hero-pet {
-      top: -5px;
-      right: calc(50% - 88px);
-      width: 180px;
-      height: 174px;
-      font-size: 127px;
+      height: 145px;
+    }
+    .hero-pet--dog {
+      top: -2px;
+      right: 21px;
+      width: 145px;
+      font-size: 103px;
+    }
+    .hero-pet--cat {
+      top: 2px;
+      right: calc(50% + 5px);
+      width: 132px;
+      font-size: 96px;
     }
     .hero-orbit--one {
       top: -21px;
@@ -1399,9 +1444,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
       height: 240px;
     }
     .hero-shadow {
-      right: calc(50% - 80px);
+      right: calc(50% - 112px);
       bottom: 1px;
-      width: 160px;
+      width: 224px;
     }
     .sticker--heart {
       top: 3px;
@@ -1442,10 +1487,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
       width: 30px;
       height: 30px;
     }
-    .pet-picker strong {
+    .pet-picker-info strong {
       font-size: 9px;
     }
-    .pet-picker small {
+    .pet-picker-info small {
       font-size: 6px;
     }
     .chevron {

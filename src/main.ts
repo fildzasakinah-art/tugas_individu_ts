@@ -27,10 +27,21 @@ const categoryIcons: Record<CareCategory, string> = {
   Lainnya: '🐾',
 }
 
+const petProfiles = {
+  milo: { name: 'Milo', species: 'Anjing', emoji: '🐶' },
+  luna: { name: 'Luna', species: 'Kucing', emoji: '🐱' },
+  kiko: { name: 'Kiko', species: 'Anjing', emoji: '🐕' },
+  oyen: { name: 'Oyen', species: 'Kucing', emoji: '🐈' },
+  mochi: { name: 'Mochi', species: 'Kucing', emoji: '😺' },
+} as const
+
+type PetProfileId = keyof typeof petProfiles
+
 let tasks: CareTask[] = []
 let activeFilter: TaskFilter = 'all'
 let searchQuery = ''
 let editingId: string | null = null
+let selectedPetId: PetProfileId = 'milo'
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (character) => {
@@ -43,6 +54,10 @@ function escapeHtml(value: string): string {
     }
     return entities[character] ?? character
   })
+}
+
+function isPetProfileId(value: string): value is PetProfileId {
+  return Object.prototype.hasOwnProperty.call(petProfiles, value)
 }
 
 function showNotice(message: string, kind: 'error' | 'success' = 'success'): void {
@@ -90,6 +105,7 @@ function taskCard(task: CareTask): string {
 }
 
 function render(): void {
+  const selectedPet = petProfiles[selectedPetId]
   const now = new Date()
   const pending = tasks.filter((task) => task.status === 'pending')
   const dueSoon = pending.filter((task) => {
@@ -134,7 +150,8 @@ function render(): void {
           </div>
           <div class="hero-art" aria-hidden="true">
             <div class="sun-disc"></div>
-            <div class="hero-pet">🐕</div>
+            <div class="hero-pet hero-pet--dog">🐕</div>
+            <div class="hero-pet hero-pet--cat">🐈</div>
             <div class="hero-sticker sticker--heart">♡</div>
             <div class="hero-sticker sticker--spark">✳</div>
             <div class="hero-caption">teman baik,<br>hari yang baik</div>
@@ -149,7 +166,14 @@ function render(): void {
             <h2>Halo, pet parent <span class="wave">✳</span></h2>
             <p class="section-subtitle">Yuk, lihat apa yang perlu dilakukan hari ini.</p>
           </div>
-          <div class="pet-picker"><span class="pet-avatar">🐶</span><span><small>SAHABATKU</small><strong>Milo & Luna</strong></span><span class="chevron">⌄</span></div>
+          <div class="pet-picker">
+            <span class="pet-avatar" aria-hidden="true">${selectedPet.emoji}</span>
+            <span class="pet-picker-info"><small>${selectedPet.species.toLocaleUpperCase('id-ID')}</small><strong>${selectedPet.name}</strong></span>
+            <span class="chevron" aria-hidden="true">⌄</span>
+            <select id="pet-select" class="pet-picker-select" aria-label="Pilih hewan">
+              ${Object.entries(petProfiles).map(([id, pet]) => `<option value="${id}" ${selectedPetId === id ? 'selected' : ''}>${pet.emoji} ${pet.name} · ${pet.species}</option>`).join('')}
+            </select>
+          </div>
         </section>
 
         <section id="ringkasan" class="summary-grid" aria-label="Ringkasan perawatan">
@@ -222,6 +246,12 @@ function render(): void {
 }
 
 function bindEvents(): void {
+  app!.querySelector<HTMLSelectElement>('#pet-select')?.addEventListener('change', (event) => {
+    const petId = (event.currentTarget as HTMLSelectElement).value
+    if (!isPetProfileId(petId)) return
+    selectedPetId = petId
+    render()
+  })
   app!.querySelectorAll<HTMLButtonElement>('[data-action="new"]').forEach((button) => {
     button.addEventListener('click', () => openDialog())
   })
